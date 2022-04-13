@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Dealz</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Fuente Balsamiq -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main class="create-car">
+        <div>
+            <div class="header">
+                <h1>Hi {{user.first_name}}</h1>
+                <p>Add a new Car</p>
+            </div>
+            <div class="options">
+                <form action="/dashboard">
+                    <button>TV Shows</button>
+                </form>
+                <form action="/logout">
+                    <button>Logout</button>
+                </form>
+            </div>
+        </div>
+        <!-- Alerta flash -->
+        {% with messages = get_flashed_messages(category_filter=['car']) %}
+            {% if messages %}
+            <div class="alert">
+                <strong>
+                {% for message in messages %}
+                    <p>{{message}}</p>
+                </strong>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endwith %}
+        <!-- Campo para añadir carros -->
+        <form action="/car/new" method="POST" class="add-car">
+            <!-- Columna 1 -->
+            <div class="main-box-login">
+                <div class="field">
+                    <label>Price:</label>
+                    <input type="number" name="price" id="price">
+                </div>
+                <div class="field">
+                    <label>Model:</label>
+                    <input type="text" name="model" id="model">
+                </div>
+                <div class="field">
+                    <label>Maker</label>
+                    <input type="text" name="maker" id="maker">
+                </div>
+                <div class="field">
+                    <label>Year:</label>
+                    <input type="number" name="year" id="year">
+                </div>
+                <div class="field">
+                    <label>Description:</label>
+                    <textarea name="description" id="description"></textarea>
+                </div>
+            </div>
+            <div>
+                <button type="submit">Add</button>
+            </div>
+        </form>
+
+    </main>
+</body>
+</html>

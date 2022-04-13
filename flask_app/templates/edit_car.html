@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Car</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Fuente Balsamiq -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main class="create-show">
+        <div class="header-show-display">
+            <div class="header">
+                <h1>Edit {{edit.title}}</h1>
+            </div>
+            <div class="options">
+                <a href="/dashboard">Dashboard</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+
+        <!-- Alerta flash -->
+        {% with messages = get_flashed_messages(category_filter=['car']) %}
+            {% if messages %}
+            <div class="alert">
+                <strong>
+                {% for message in messages %}
+                    <p>{{message}}</p>
+                </strong>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endwith %}
+        <form action="/update/car" method="POST">
+            <!-- Columna 1 -->
+            <div class="recipe-card">
+                <!-- Valor hidden para conexion con módulo -->
+                <input type="hidden" name ="id" value = {{edit.id}}>
+                <div class="field">
+                    <label>Price:</label>
+                    <input type="number" name="price" id="price" value="{{edit.price}}">
+                </div>
+                <div class="field">
+                    <label>Model:</label>
+                    <input type="text" name="model" id="model" value="{{edit.model}}">
+                </div>
+                <div class="field">
+                    <label>Maker</label>
+                    <input type="text" name="maker" id="maker" value="{{edit.maker}}"></textarea>
+                </div>
+                <div class="field">
+                    <label>Year</label>
+                    <input type="number" name="year" id="year" value="{{edit.year}}">
+                </div>
+                <div class="field">
+                    <label>Description:</label>
+                    <textarea name="description" id="description">{{edit.description}}</textarea>
+                </div>
+            </div>
+            <button type="submit">Update</button>
+        </form>
+    </main>
+    
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Fuente Balsamiq -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+        <div>
+            <div class = "header">
+                <h1>Welcome to Car Dealz {{user.first_name}}</h1>
+            </div>
+            <div class="options">
+                <form action="/logout">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+        <!-- Tabla de carros -->
+        <h2>Cars for Sale</h2>
+        <div>
+            <table class="table-shows">
+                <thead class="table-header">
+                    <tr>
+                        <th>Model</th>
+                        <th>Year</th>
+                        <th>Seller</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-row">
+                    {% for car in cars %}
+                        <tr>
+                            <td>
+                                {{car.model}}
+                            </td>
+                            <td>
+                                {{car.year}}
+                            </td>
+                            <td>
+                                {{(car.user_id)}}
+                                {{poster[car.user_id]}}
+                            </td>
+                            <td class="action-row">
+                                <a href="/car/{{car.id}}">View</a>
+                                {% if car.user_id == session.user_id %}
+                                <a href="/edit/car/{{car.id}}">Edit</a>
+                                <a href="/delete/car/{{car.id}}">Delete</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+            <form action="/new">
+                <button type="submit" >Add A Car</button>
+            </form>
+        <div>
+        </div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Display</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Fuente Balsamiq -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header-show-display">
+        <div class="options">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/logout">Logout</a>
+    </div>
+    </div>
+
+    <div class="car-card">
+        <div class = "car-title-likes">
+            <h2 class="car-title">{{car.price}} $</h2>
+
+        </div>
+
+        <p class="card-text">Model:  {{car.model}}</p>
+        <p class="card-text">Make:  {{car.maker}}</p>
+        <p class="card-text">Description:  {{car.description}}</p>
+        <p class="card-text">Year:  {{car.year}}</p>
+        <p>Seller: {{ (poster[0]).get('first_name')}} {{ (poster[0]).get('last_name')}}</p>
+
+        <form action="/purchase" method="POST">
+            <input type="hidden" value="{{car.id}}" name="car_id" id="car_id">
+            <button>Purchase</button>
+        </form>
+
+
+        
+    </div>
+    
+</body>
+</html>

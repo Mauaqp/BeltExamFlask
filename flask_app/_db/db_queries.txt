@@ -1,0 +1,94 @@
+CREATE DATABASE users_tv
+USE users_tv
+
+CREATE TABLE users (
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    	first_name VARCHAR(25) NOT NULL,
+    	last_name VARCHAR(25) NOT NULL,
+    	email VARCHAR(30) NOT NULL,
+    	password VARCHAR(150) NOT NULL,
+    	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE shows(
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  	title VARCHAR(45) NOT NULL,
+	network TEXT(50) NOT NULL,
+    	description TEXT(150) NOT NULL,
+    	release_date DATE NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    	user_id INT,
+    	FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+SELECT * 
+FROM users
+
+SELECT * 
+FROM shows
+
+
+CREATE TABLE liked_by (
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    show_id INT,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (show_id) REFERENCES shows(id)
+);
+
+SELECT * 
+FROM liked_by
+
+SELECT COUNT(shows.title)
+FROM users 
+LEFT JOIN liked_by ON users.id = liked_by.user_id 
+LEFT JOIN shows ON shows.id = liked_by.show_id 
+WHERE shows.id = 1
+
+SELECT shows.title
+FROM shows
+LEFT JOIN users ON user_id = users.id
+WHERE users.id = 2
+
+
+SELECT shows.id, shows.title
+FROM users 
+LEFT JOIN liked_by ON users.id = liked_by.user_id 
+LEFT JOIN shows ON shows.id = liked_by.show_id 
+WHERE users.id = 1
+
+-- Para aceptar los borrados sin tener conflicto con las FK
+-- Este código debió ponerse al momento de la creación 
+CONSTRAINT liked_by FOREIGN KEY(show_id) REFERENCES shows(id) 
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- 1 paso, drop foreign key
+SELECT *
+FROM liked_by
+
+-- Aqui vemos la estructura de la data para conocer el nombre de la FK y borrarla
+SHOW CREATE TABLE liked_by;
+
+ALTER TABLE liked_by DROP FOREIGN KEY liked_by_ibfk_1
+
+-- unchek los fk
+SET FOREIGN_KEY_CHECKS=0;
+
+ -- 2 agregar nuevamente el foreign key
+ALTER TABLE liked_by ADD FOREIGN KEY(show_id) 
+REFERENCES shows(id) 
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE liked_by ADD FOREIGN KEY(user_id) 
+REFERENCES users(id) 
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Volver a prender el check
+SET FOREIGN_KEY_CHECKS=1;
+
+
+
